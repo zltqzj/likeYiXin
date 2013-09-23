@@ -7,14 +7,45 @@
 //
 
 #import "AppDelegate.h"
-
+#import "LeftViewController.h"
+#import "RightViewController.h"
+#import "CenterViewController.h"
+#import "MMDrawerController.h"
+#import "MMExampleDrawerVisualStateManager.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    UIViewController * leftVC = [[LeftViewController alloc] init];
+    UINavigationController* leftNav  = [[UINavigationController alloc] initWithRootViewController:leftVC];
+    
+    UIViewController* rightVC = [[RightViewController alloc] init];
+    UIViewController* centerVC = [[CenterViewController alloc] init];
+    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:centerVC];
+    MMDrawerController* drawController = [[MMDrawerController alloc] initWithCenterViewController:nav leftDrawerViewController:leftNav rightDrawerViewController:rightVC];
+    [drawController setMaximumLeftDrawerWidth:150.0];
+    [drawController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+    [drawController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+    [drawController setDrawerVisualStateBlock:^(MMDrawerController *drawerController, MMDrawerSide drawerSide, CGFloat percentVisible) {
+         MMDrawerControllerDrawerVisualStateBlock block;
+         block = [[MMExampleDrawerVisualStateManager sharedManager]
+                  drawerVisualStateBlockForDrawerSide:drawerSide];
+         if(block){
+             block(drawerController, drawerSide, percentVisible);
+         }
+     }];
+
+    self.window.rootViewController = drawController;
+    
+    
+    
+    
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
