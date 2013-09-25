@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C5F442D17F192A200B66553 /* VoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C5F442C17F192A200B66553 /* VoiceViewController.m */; };
 		C427160917EE9FE800C36490 /* head_default_local.png in Resources */ = {isa = PBXBuildFile; fileRef = C427160817EE9FE800C36490 /* head_default_local.png */; };
 		C427160C17EEC2F000C36490 /* yixin_profile_button_bg_normal.9.png in Resources */ = {isa = PBXBuildFile; fileRef = C427160A17EEC2F000C36490 /* yixin_profile_button_bg_normal.9.png */; };
 		C427160D17EEC2F000C36490 /* yixin_profile_button_bg_pressed.9.png in Resources */ = {isa = PBXBuildFile; fileRef = C427160B17EEC2F000C36490 /* yixin_profile_button_bg_pressed.9.png */; };
@@ -847,6 +848,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C5F442B17F192A200B66553 /* VoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceViewController.h; sourceTree = "<group>"; };
+		1C5F442C17F192A200B66553 /* VoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceViewController.m; sourceTree = "<group>"; };
 		C427160817EE9FE800C36490 /* head_default_local.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = head_default_local.png; sourceTree = "<group>"; };
 		C427160A17EEC2F000C36490 /* yixin_profile_button_bg_normal.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yixin_profile_button_bg_normal.9.png; sourceTree = "<group>"; };
 		C427160B17EEC2F000C36490 /* yixin_profile_button_bg_pressed.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yixin_profile_button_bg_pressed.9.png; sourceTree = "<group>"; };
@@ -1719,6 +1722,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C5F442A17F1925B00B66553 /* OtherUI-ThirdGrade */ = {
+			isa = PBXGroup;
+			children = (
+				1C5F442B17F192A200B66553 /* VoiceViewController.h */,
+				1C5F442C17F192A200B66553 /* VoiceViewController.m */,
+			);
+			name = "OtherUI-ThirdGrade";
+			sourceTree = "<group>";
+		};
 		C427160717EE9FE800C36490 /* allImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -2584,12 +2596,13 @@
 		C46F514717DD7706000C3B2E /* SliderDraw */ = {
 			isa = PBXGroup;
 			children = (
+				1C5F442A17F1925B00B66553 /* OtherUI-ThirdGrade */,
 				C4D265EE17F0233900AF6C98 /* blockUI */,
 				C46F515017DD7706000C3B2E /* AppDelegate.h */,
 				C46F515117DD7706000C3B2E /* AppDelegate.m */,
 				C427160717EE9FE800C36490 /* allImage */,
 				C427161017EEC63B00C36490 /* ThreeMainUI */,
-				C4C7678D17EEDC5C00BFD90B /* OtherUI */,
+				C4C7678D17EEDC5C00BFD90B /* OtherUI-SecondGrade */,
 				C46F517517DD7C13000C3B2E /* MMUtils */,
 				C46F514817DD7706000C3B2E /* Supporting Files */,
 			);
@@ -2627,7 +2640,7 @@
 			name = MMUtils;
 			sourceTree = "<group>";
 		};
-		C4C7678D17EEDC5C00BFD90B /* OtherUI */ = {
+		C4C7678D17EEDC5C00BFD90B /* OtherUI-SecondGrade */ = {
 			isa = PBXGroup;
 			children = (
 				C4C7613C17EEDC2900BFD90B /* AddFriendsViewController.h */,
@@ -2637,7 +2650,7 @@
 				C4D265F917F0343C00AF6C98 /* SettingViewController.h */,
 				C4D265FA17F0343C00AF6C98 /* SettingViewController.m */,
 			);
-			name = OtherUI;
+			name = "OtherUI-SecondGrade";
 			sourceTree = "<group>";
 		};
 		C4D265EE17F0233900AF6C98 /* blockUI */ = {
@@ -3546,6 +3559,7 @@
 				C4D265F517F0236C00AF6C98 /* BUIView.m in Sources */,
 				C4D265F817F0340B00AF6C98 /* FriendsCircleViewController.m in Sources */,
 				C4D265FB17F0343C00AF6C98 /* SettingViewController.m in Sources */,
+				1C5F442D17F192A200B66553 /* VoiceViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

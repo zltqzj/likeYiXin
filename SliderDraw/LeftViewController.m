@@ -141,9 +141,9 @@
         [[self mm_drawerController] setCenterViewController:nav withCloseAnimation:YES completion:nil];
     }
     if (indexPath.row==1) {// 朋友圈
-        AddFriendsViewController* add = [[AddFriendsViewController alloc] init];
-        UINavigationController * navFriend = [[UINavigationController alloc] initWithRootViewController:add];
-        [[self mm_drawerController] setCenterViewController:navFriend withCloseAnimation:YES completion:nil];
+        FriendsCircleViewController* add = [[FriendsCircleViewController alloc] init];
+        UINavigationController * friendCircle = [[UINavigationController alloc] initWithRootViewController:add];
+        [[self mm_drawerController] setCenterViewController:friendCircle withCloseAnimation:YES completion:nil];
     }
     if (indexPath.row ==2) {// 设置
         SettingViewController* set = [[SettingViewController alloc] init];

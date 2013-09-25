@@ -13,10 +13,7 @@
 #import "MMDrawerBarButtonItem.h"
 #import "LeftViewController.h"
 #import "RightViewController.h"
-
  
- 
-
 #import <QuartzCore/QuartzCore.h>
 
 typedef NS_ENUM(NSInteger, MMCenterViewControllerSection){
@@ -26,11 +23,19 @@ typedef NS_ENUM(NSInteger, MMCenterViewControllerSection){
     MMCenterViewControllerSectionRightDrawerAnimation,
 };
 @interface CenterViewController ()
+ 
 
+@property (nonatomic,assign) CGRect openFrame;
+@property (nonatomic,assign) CGRect closeFrame;
+@property (nonatomic,assign) CGRect openFrameBottom;
+@property (nonatomic,assign) CGRect closeFrameBottom;
 @end
+
+#define OFFSET 150
 
 @implementation CenterViewController
 @synthesize chatTable = _chatTable;
+@synthesize fakeArray = _fakeArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,10 +46,8 @@ typedef NS_ENUM(NSInteger, MMCenterViewControllerSection){
     return self;
 }
 
-- (void)viewDidLoad
+-(void)baseSetting
 {
-    [super viewDidLoad];
-    
     self.title = @"易信";
     UITapGestureRecognizer * doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
     [doubleTap setNumberOfTapsRequired:2];
@@ -55,23 +58,59 @@ typedef NS_ENUM(NSInteger, MMCenterViewControllerSection){
     [twoFingerDoubleTap setNumberOfTouchesRequired:2];
     [self.view addGestureRecognizer:twoFingerDoubleTap];
     
-    
     [self setupLeftMenuButton];
-  //  [self setupRightMenuButton];
+    [self setupRightMenuButton];
     
     [self.navigationController.navigationBar setTintColor:[UIColor
                                                            colorWithRed:78.0/255.0
                                                            green:156.0/255.0
                                                            blue:206.0/255.0
                                                            alpha:1.0]];
-    
-    
+
     [self.navigationController.view.layer setCornerRadius:10.0f];
     
     
-     
-    
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    self.openFrame = CGRectMake(5, 0+5, 300, 380); //上
+    self.closeFrame = CGRectMake(5, OFFSET+5, 300, 380); //下
+    
+    self.openFrameBottom = CGRectMake(5, OFFSET+5, 300, 380);
+    self.closeFrameBottom = CGRectMake(5, OFFSET*2+5, 300, 380);
+}
+
+
+-(void)tableViewSetting
+{
+    _chatTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
+    self.chatTable.delegate = self;
+    self.chatTable.dataSource = self;
+    [self.view addSubview:_chatTable];
+    
+    _fakeArray = [[NSMutableArray alloc]initWithCapacity:10];
+    for (int i =0; i<10; i++) {
+        [_fakeArray addObject:[NSString stringWithFormat:@"%dhi",i]];
+    }
+     
+}
+
+ 
+
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self baseSetting];
+    [self tableViewSetting];
+    
+    
+    
+    
+    
+    
+    
     
 	// Do any additional setup after loading the view.
 }
@@ -82,8 +121,14 @@ typedef NS_ENUM(NSInteger, MMCenterViewControllerSection){
 }
 
 -(void)setupRightMenuButton{
-    MMDrawerBarButtonItem * rightDrawerButton = [[MMDrawerBarButtonItem alloc] initWithTarget:self action:@selector(rightDrawerButtonPress:)];
-    [self.navigationItem setRightBarButtonItem:rightDrawerButton animated:YES];
+    UIButton* rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightBtn setFrame:CGRectMake(0, 0, 40, 40)];
+    [rightBtn setImage:[UIImage imageNamed:@"g_title_team_import_icon.png"] forState:UIControlStateNormal];
+    UIBarButtonItem* barButton = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    [rightBtn handleControlEvent:UIControlEventTouchUpInside withBlock:^(id sender) {
+         [self.mm_drawerController toggleDrawerSide:MMDrawerSideRight animated:YES completion:nil];
+    }];
+    self.navigationItem.rightBarButtonItem = barButton;
 }
 
 
@@ -110,5 +155,80 @@ typedef NS_ENUM(NSInteger, MMCenterViewControllerSection){
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
+#pragma  mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [_fakeArray count];
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] ;
+    }
+    cell.textLabel.text = [_fakeArray objectAtIndex:indexPath.row];
+    //config the cell
+    return cell;
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+     NSLog(@"拖动了几厘米%f",_chatTable.contentOffset.y);
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+//    UIEdgeInsets inset = _chatTable.contentInset;
+//    inset.top = 65;
+//    _chatTable.contentInset = inset;
+//    _chatTable.contentOffset = CGPointMake(0, -65);
+    if (scrollView.contentOffset.y > -65) {
+      
+        NSLog(@"go on drag");
+    }
+    else{
+        NSLog(@"enough");
+        // reveal back view
+       // scrollView.contentOffset.y = 0;
+        [scrollView setContentOffset:CGPointMake(0, 0)];
+        UIView* view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+        [view setBackgroundColor:[UIColor grayColor]];
+        CATransition* animation =[CATransition animation];
+        [animation setDuration:1.5f];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+        [animation setType:kCATransitionReveal];
+        [animation setSubtype:kCATransitionFromBottom];
+        [self.view.layer addAnimation:animation forKey:@"Reveal"];
+        [self.view addSubview:view];
+        
+                
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 @end

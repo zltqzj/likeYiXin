@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface CenterViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+#import "BlockUI.h"
+@interface CenterViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 @property(strong,nonatomic) UITableView* chatTable;
+
+@property(strong,nonatomic) NSMutableArray* fakeArray;
 
 @end
